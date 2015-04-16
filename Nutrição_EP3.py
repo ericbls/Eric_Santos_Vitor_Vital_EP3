@@ -7,14 +7,11 @@ arquivo_usuario = open('usuario.csv','r')
 arquivo_alimentos = open('alimentos.csv','r')
 
 # arquivo que conterá o índice de massa corporal do usuário e a indicação se este está saudável
-arquivo_resultado = open('resultado.txt','r+')
+arquivo_resultado = open('resultado.csv','r+')
 
 
-usuario = arquivo_usuario.readlines()
 
-print (usuario)
-
-def IDM(massa,altura):
+def IMC(massa,altura):
     return massa/altura**2
     
 def calcula_harris(altura,massa,idade,sexo):
@@ -23,9 +20,21 @@ def calcula_harris(altura,massa,idade,sexo):
     else:
         return 88.36+(13.4*massa)+(4.8*altura)-(5.7*idade)
 
-# passo intermediário para transformar as informações do usuário em dicionário
-lista_usuario = usuario[1].split(',')
-
-# adicionando as informações do usuário num dicionário
+'''
+criará um dicionário com o nome do usuário e as informações fisícas associadas a ele
+'''
+lista_usuario = arquivo_usuario.readlines()
+descrição_usuario = lista_usuario[1].split(',')
 info_usuario = dict()
-info_usuario[lista_usuario[0]] = [lista_usuario[1],lista_usuario[2],lista_usuario[3],lista_usuario[4],lista_usuario[5]]
+info_usuario[descrição_usuario[0]] = [descrição_usuario[1],descrição_usuario[2],descrição_usuario[3],descrição_usuario[4],descrição_usuario[5]]
+
+
+'''
+criará um dicionário com todos os  alimentos e as informações associadas a eles
+'''
+dict_alimentos = dict()
+lista_alimentos = arquivo_alimentos.readlines()
+for i in range(1, len(lista_alimentos)):
+    linha_alimentos = lista_alimentos[i].split(',')
+    dict_alimentos[linha_alimentos[0]] = [linha_alimentos[1],linha_alimentos[2],linha_alimentos[3],linha_alimentos[4],linha_alimentos[5]]
+  
