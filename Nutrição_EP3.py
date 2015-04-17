@@ -61,12 +61,24 @@ for x in datas:
         if x == z[0]:      
             dict_ingestao[x].append([z[1],z[2]])
             
-            
-print(datas)
-print(' ')
-print(lista_ingestao)
-print(' ')
-print(dict_ingestao)
+
+'''
+Criará um dicionário com as informações de quantas calorias (em Kcal) e quanto de proteínas, carboidratos e gorduras (em gramas) ele consumiu em cada dia
+'''
+dict_dadosnutri = dict()            # Diciánario com os valores nutricionais consumidos a cada dia
+cal = 0
+prot = 0
+carb = 0
+gord = 0
+for a in datas:
+    for b in range(len(dict_ingestao[a])):
+        prop = float(dict_ingestao[a][b][1])/float(dict_alimentos[dict_ingestao[a][b][0]][0])
+        cal = cal + (float(dict_alimentos[dict_ingestao[a][b][0]][1])*prop)
+        prot = prot + (float(dict_alimentos[dict_ingestao[a][b][0]][2])*prop)
+        carb = carb + (float(dict_alimentos[dict_ingestao[a][b][0]][3])*prop)
+        gord = gord + (float(dict_alimentos[dict_ingestao[a][b][0]][4])*prop)
+    dict_dadosnutri[a] = [cal,prot,carb,gord]
+
 
 
 arquivo_alimentos.close
