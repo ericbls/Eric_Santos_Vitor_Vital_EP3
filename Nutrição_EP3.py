@@ -14,7 +14,7 @@ arquivo_resultado = open('resultado.csv','r+')
 def IMC(massa,altura):
     return massa/altura**2
     
-def calcula_harris(altura,massa,idade,sexo,exercicio):                         # Define a função que calculará o TMB e o grau de atividade
+def calcula_harris(idade,massa,sexo,altura,exercicio):                         # Define a função que calculará o TMB e o grau de atividade
     if sexo == 'F':
         if exercicio == 'minimo':
             return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.2
@@ -61,7 +61,7 @@ for i in range(1, len(lista_alimentos)):
 
     
 '''
-Criará um dicionário com as informações nutricionais do usuário
+Criará um dicionário com as informações nutricionais do usuário (o que ele consumiu em cada dia considerado)
 '''
 dict_ingestao = dict()                                                         # Dicionário com as informações daquilo que o usuário ingeriu por dia
 lista_ingestao = list()                                                        # Uma lista em que cada elemento é uma lista com outros 3 elementos (a data, o alimento e a quantidade)
@@ -105,9 +105,37 @@ for a in datas:
                                                                                # float(dict_alimentos[dict_ingestao[a][b][0]][4]) equivale a quantidade de gorduras que uma porção do alimento [b] possui   
     dict_dadosnutri[a] = [cal,prot,carb,gord]                                  # Coloca o valor total de calorias, proteínas, carboidratos e gorduras consumidas no dia no dicionário (como um valor), associado a uma chave, que será a data (o dia em que tudo foi consumido)
 
+'''
+Criará uma lista com as datas consideradas, só que em ordem cronológica1
+'''
+datas_crono = list()                                                           # Lista com as datas em ordem cronológica
+temp = list()
+
+for c in range(len(datas)):                                                    # A lista "temp", conterá cada data, separando o dia, mês e ano como um elemento de uma lista. Exemplo: 06/04/15 se tornará ['06','04','15']
+    temp.append(datas[c].split('/'))    
+    
+for d in range(len(datas)):                                                    # Esse loop adicionará as datas em ordem cronológica à lista "datas_crono"
+    for e in range(len(datas)):    
+        if datas[d] in datas_crono:                                            # Garantirá que não adicione datas repetidas na lista "datas_crono"
+            break
+        if temp[d][2] <= temp[e][2]:                                           # Essa e as próximas três linhas comparam um elemento com um outro, checando primeiramente o ano, depois o mês e só então a data.
+            if temp[d][1] <= temp[e][1]:                                       # Essas quatro linhas, portanto, são as que adicionam as datas em ordem cronológicas
+                if temp[d][0] < temp[e][0]:                                    # Aqui é adicionado a data.
+                    datas_crono.append(datas[d])
+for f in datas:                                                                # A última data não é adicionada à lista pelos loops anteriores, portanto este loop serve para adicioná-lo
+    if f not in datas_crono:
+        datas_crono.append(f)
 
 
+'''
+Criará uma lista com a quantidade calórica que usuário deveria consumir por dia, segundo a fórmula de Harris-Benedict
+(considerará o mesmo número de dias que em "usuario.csv". Em outras palavras,por exemplo, se no arquivo só foi informado o que o usuário consumiu em duas datas, a lista criada só possuirá dois valores - a quantidade de calorias que ele deveria consumir nas duas datas)
+'''
+calorias_necessarias = [0]*len(datas_crono)
+for g in range(len(calorias_necessarias)):
+    calorias_necessarias[g] = calcula_harris(float(descricao_usuario[1]),float(descricao_usuario[2]),descricao_usuario[3],float(descricao_usuario[4]),descricao_usuario[5])
 
+print(calorias_necessarias)
 
 arquivo_alimentos.close
 arquivo_usuario.close
