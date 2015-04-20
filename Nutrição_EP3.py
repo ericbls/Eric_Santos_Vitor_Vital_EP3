@@ -6,10 +6,6 @@ arquivo_usuario = open('usuario.csv','r+')
 ''' variável com as informações dos alimentos '''
 arquivo_alimentos = open('alimentos.csv','r')
 
-''' arquivo que conterá o índice de massa corporal do usuário e a indicação se este está saudável '''
-arquivo_resultado = open('resultado.csv','r+')
-
-
 
 def IMC(massa,altura):
     return massa/altura**2
@@ -42,13 +38,10 @@ def calcula_harris(idade,massa,sexo,altura,exercicio):                         #
 
 
 '''
-Criará um dicionário com o nome do usuário e as informações fisícas associadas a ele
+Criará uma lista com o nome do usuário e as informações fisícas associadas a ele
 '''
 lista_usuario = arquivo_usuario.readlines()                                    # Lista com todas as informações do usuário
 descricao_usuario = lista_usuario[1].split(',')                                # Lista temporaria contendo as informações da 2° linha do arquivo "usuarios.csv"
-info_usuario = dict()                                                          # Dicionário contendo as informações do usuário sobre o físico e hábitos apenas
-info_usuario[descricao_usuario[0]] = [descricao_usuario[1],descricao_usuario[2],descricao_usuario[3],descricao_usuario[4],descricao_usuario[5]]
-
 
 '''
 Criará um dicionário com todos os  alimentos e as informações associadas a eles
@@ -106,7 +99,7 @@ for a in datas:
     dict_dadosnutri[a] = [cal,prot,carb,gord]                                  # Coloca o valor total de calorias, proteínas, carboidratos e gorduras consumidas no dia no dicionário (como um valor), associado a uma chave, que será a data (o dia em que tudo foi consumido)
 
 '''
-Criará uma lista com as datas consideradas, só que em ordem cronológica1
+Criará uma lista com as datas consideradas, só que em ordem cronológica
 '''
 datas_crono = list()                                                           # Lista com as datas em ordem cronológica
 temp = list()
@@ -135,8 +128,37 @@ calorias_necessarias = [0]*len(datas_crono)
 for g in range(len(calorias_necessarias)):
     calorias_necessarias[g] = calcula_harris(float(descricao_usuario[1]),float(descricao_usuario[2]),descricao_usuario[3],float(descricao_usuario[4]),descricao_usuario[5])
 
-print(calorias_necessarias)
+'''
+Escreverá as informações necessárias no arquivo "resultado.csv"
+'''
+resultado = open('resultado.txt','w',encoding='utf8')
+resultado.write('Abaixo estão o seu índice de massa corporal (IDM), a quantidade de calorias que você consumiu\ne o quanto foi consumido a mais ou a menos segundo a fórmula de Harris-Benedict em cada dia e,\npor fim, se você está subnutrido, saudável, possui sobrepeso, ou obesidade de graus I, II ou III\n\n')
+imc = IMC(float(descricao_usuario[2]),float(descricao_usuario[4]))
+calorias_recomendadas = calcula_harris(float(descricao_usuario[1]),float(descricao_usuario[2]),descricao_usuario[3],float(descricao_usuario[4]),descricao_usuario[5])
+resultado.write('Dia, calorias consumidas e quantas calorias você consumiu a mais ou a menos do que deveria:\n\n')
+for h in datas_crono:
+    calorias_consumidas = dict_dadosnutri[h][0]
+    resultado.write('dia %s   '%h)
+    resultado.write('calorias consumidas: %f   '%calorias_consumidas)
+    resultado.write('calorias consumidas a mais/menos: %f\n\n'%(calorias_consumidas-calorias_recomendadas))
+if imc<18.5:
+    resultado.write('Você está subnutrido, segundo o seu IMC (calculado através de sua massa e altura)\n')
+elif imc>=18.5 and imc<=24.9:
+    resultado.write('Você está saudável, segundo o seu IMC (calculado através de sua massa e altura)\n')
+elif imc>=25 and imc<=29.9:
+    resultado.write('Você está um pouco acima do peso, segundo o seu IMC (calculado através de sua massa e altura)\n')
+elif imc>=30 and imc<=34.9:
+    resultado.write('Você possui um grau I de obesidade, segundo o seu IMC (calculado através de sua massa e altura)\n')
+elif imc>=35 and imc<=39.9:
+    resultado.write('Você possui um grau II de obesidade, segundo o seu IMC (calculado através de sua massa e altura)\n')
+else:
+    resultado.write('Você possui um sério caso de obesidade, segundo o seu IMC (calculado através de sua massa e altura)\n')
+
+'''
+Plotará os gráficos
+'''
+
 
 arquivo_alimentos.close
 arquivo_usuario.close
-arquivo_resultado.close
+resultado.close
