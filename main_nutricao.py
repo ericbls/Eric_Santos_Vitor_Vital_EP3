@@ -1,51 +1,26 @@
 # -*- coding: utf-8 -*-
 
-''' variável com a informação do usuário '''
+'''
+Importando arquivos e funções para o programa
+'''
+
 arquivo_usuario = open('usuario.csv','r+')
 
-''' variável com as informações dos alimentos '''
 arquivo_alimentos = open('alimentos.csv','r')
 
-
-def IMC(massa,altura):
-    return massa/altura**2
-    
-def calcula_harris(idade,massa,sexo,altura,exercicio):                         # Define a função que calculará o TMB e o grau de atividade
-    if sexo == 'F':
-        if exercicio == 'minimo':
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.2
-        elif exercicio == 'baixo':
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.375
-        elif exercicio == 'alto':
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.725
-        elif exercicio == 'muito alto':
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.9
-        else:
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.55
-    if sexo == 'M':
-        if exercicio == 'minimo':
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.2
-        elif exercicio == 'baixo':
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.375
-        elif exercicio == 'alto':
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.725
-        elif exercicio == 'muito alto':
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.9
-        else:
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.55
-    else:
-        print('Este programa não se aplica a você, seja lá o que você for')
-
+from funcao_nutricao import *
 
 '''
 Criará uma lista com o nome do usuário e as informações fisícas associadas a ele
 '''
+
 lista_usuario = arquivo_usuario.readlines()                                    # Lista com todas as informações do usuário
 descricao_usuario = lista_usuario[1].split(',')                                # Lista temporaria contendo as informações da 2° linha do arquivo "usuarios.csv"
 
 '''
 Criará um dicionário com todos os  alimentos e as informações associadas a eles
 '''
+
 dict_alimentos = dict()		                                             # Dicionário que conterá todas as informações dos alimentos
 lista_alimentos = arquivo_alimentos.readlines()
 for i in range(1, len(lista_alimentos)):
@@ -56,6 +31,7 @@ for i in range(1, len(lista_alimentos)):
 '''
 Criará um dicionário com as informações nutricionais do usuário (o que ele consumiu em cada dia considerado)
 '''
+
 dict_ingestao = dict()                                                         # Dicionário com as informações daquilo que o usuário ingeriu por dia
 lista_ingestao = list()                                                        # Uma lista em que cada elemento é uma lista com outros 3 elementos (a data, o alimento e a quantidade)
 datas = list()                                                                 # Lista com todas as datas consideradas
@@ -74,12 +50,11 @@ for x in datas:                                                                #
         if x == z[0]:                                                          # Estabelece uma condição: somente realizará a função descrita acima se a data em que o alimento foi consumido for igual a data da chave no dicionário
             dict_ingestao[x].append([z[1],z[2]])
             
-
 '''
 Criará um dicionário com as informações de quantas calorias (em Kcal) e quanto de proteínas, carboidratos e gorduras (em gramas) ele consumiu em cada dia
 '''
-dict_dadosnutri = dict()                                                       # Diciánario com os valores nutricionais consumidos a cada dia (calorias, proteínas, carboidratos,. Exemplo: {'07/04/15': [1553.50, 36.53, 223.57, 57.07], '06/04/15': [462.50, 7.22, 62.85, 20.25]}
 
+dict_dadosnutri = dict()                                                       # Diciánario com os valores nutricionais consumidos a cada dia (calorias, proteínas, carboidratos,. Exemplo: {'07/04/15': [1553.50, 36.53, 223.57, 57.07], '06/04/15': [462.50, 7.22, 62.85, 20.25]}
 
 for a in datas: 
     cal = 0
@@ -103,12 +78,14 @@ for a in datas:
 '''
 Criará uma lista com as datas consideradas, só que em ordem cronológica
 '''
+
 datas_crono = sorted(datas)
 
 '''
 Criará uma lista com a quantidade calórica que usuário deveria consumir por dia, segundo a fórmula de Harris-Benedict
 (considerará o mesmo número de dias que em "usuario.csv". Em outras palavras,por exemplo, se no arquivo só foi informado o que o usuário consumiu em duas datas, a lista criada só possuirá dois valores - a quantidade de calorias que ele deveria consumir nas duas datas)
 '''
+
 calorias_necessarias = [0]*len(datas_crono)
 for g in range(len(calorias_necessarias)):
     calorias_necessarias[g] = calcula_harris(float(descricao_usuario[1]),float(descricao_usuario[2]),descricao_usuario[3],float(descricao_usuario[4]),descricao_usuario[5])
@@ -116,6 +93,7 @@ for g in range(len(calorias_necessarias)):
 '''
 Escreverá as informações necessárias no arquivo "resultado.csv"
 '''
+
 resultado = open('resultado.txt','w',encoding='utf8')
 resultado.write('Abaixo estão o seu índice de massa corporal (IDM), a quantidade de calorias que você consumiu\ne o quanto foi consumido a mais ou a menos segundo a fórmula de Harris-Benedict em cada dia e,\npor fim, se você está subnutrido, saudável, possui sobrepeso, ou obesidade de graus I, II ou III\n\n')
 imc = IMC(float(descricao_usuario[2]),float(descricao_usuario[4]))
@@ -142,64 +120,14 @@ else:
 '''
 Plotará os gráficos das calorias
 '''
-def grafico_calorias():
-    import matplotlib.pyplot as plt
-    import numpy as np
     
-    calorias_consumidas = []
-    for a in datas_crono:
-        calorias_consumidas.append(dict_dadosnutri[a][0])
-     
-    todos_elementos = calorias_consumidas + calorias_necessarias
-     
-    y = calorias_consumidas
-    k = calorias_necessarias
-    
-    ax = plt.subplot(111)
-    ax.bar(np.arange(0,len(datas_crono))+0.8, y,width=0.2,color='b')
-    ax.bar(np.arange(0,len(datas_crono))+1.0, k,width=0.2,color='r')
-    ax.set_xticks(np.arange(len(datas_crono))+1)
-    ax.set_xticklabels(datas_crono)
-    plt.axis([0,len(datas_crono)+1,0,max(todos_elementos)+200])
-    legenda="Calorias ingeridas(Kcal)","Calorias recomendadas(Kcal)"
-    plt.legend(legenda,bbox_to_anchor=(1.0, -0.15),ncol=2,fancybox=True, shadow=True)
-    plt.show()
-    
-grafico_calorias()
+grafico_calorias(datas_crono,dict_dadosnutri[a][0],calorias_necessarias)
 
 ''' 
 Plotará os gráficos do consumo dos outros nutrientes
 '''
-def grafico_nutricional():
-    import matplotlib.pyplot as plt
-    import numpy as np
-    
-    proteinas = list()
-    carboidratos = list()
-    gorduras = list()
-    for a in datas_crono:
-        proteinas.append(dict_dadosnutri[a][1])
-        carboidratos.append(dict_dadosnutri[a][2])
-        gorduras.append(dict_dadosnutri[a][3])        
 
-    todos_elementos = proteinas+carboidratos+gorduras    
-    
-    y = proteinas
-    z = carboidratos
-    k = gorduras
-    
-    ax = plt.subplot(111)
-    ax.bar(np.arange(0,len(datas_crono))+0.7, y,width=0.2,color='b')
-    ax.bar(np.arange(0,len(datas_crono))+0.9, z,width=0.2,color='g')
-    ax.bar(np.arange(0,len(datas_crono))+1.1, k,width=0.2,color='r')
-    ax.set_xticks(np.arange(len(datas_crono))+1)
-    ax.set_xticklabels(datas_crono)
-    plt.axis([0,len(datas_crono)+1,0,max(todos_elementos)+5])
-    legendas="Proteínas","Carboidratos","Gorduras"
-    plt.legend(legendas,bbox_to_anchor=(1.0, -0.15),ncol=2,fancybox=True, shadow=True)
-    plt.show()
-
-grafico_nutricional()
+grafico_nutricional(datas_crono,dict_dadosnutri[a][1],dict_dadosnutri[a][2],dict_dadosnutri[a][3])
 
 arquivo_alimentos.close
 arquivo_usuario.close
