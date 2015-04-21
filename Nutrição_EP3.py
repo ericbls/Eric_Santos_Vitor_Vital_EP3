@@ -79,17 +79,19 @@ for x in datas:                                                                #
 Criará um dicionário com as informações de quantas calorias (em Kcal) e quanto de proteínas, carboidratos e gorduras (em gramas) ele consumiu em cada dia
 '''
 dict_dadosnutri = dict()                                                       # Diciánario com os valores nutricionais consumidos a cada dia (calorias, proteínas, carboidratos,. Exemplo: {'07/04/15': [1553.50, 36.53, 223.57, 57.07], '06/04/15': [462.50, 7.22, 62.85, 20.25]}
-cal = 0
-prot = 0
-carb = 0
-gord = 0
-for a in datas:                                                                
+
+
+for a in datas: 
+    cal = 0
+    prot = 0
+    carb = 0
+    gord = 0
     for b in range(len(dict_ingestao[a])):
         prop = float(dict_ingestao[a][b][1])/float(dict_alimentos[dict_ingestao[a][b][0]][0])   # fração de quanto o usuário consumiu de uma porção do alimento (quantidade no arquivo "alimentos.csv").
                                                                                                 # Dict_ingestao[a][b][1] equivale a porção ([1]) consumida de um alimento [b] no dia [a]
-                                                                                                # Dict_alimentos[dict_ingestao[a][b][0]][0] equivale a porção usada como base para os valores nutricionais do "alimentos.csv"
+                                                                                                # Dict_alimentos[dict_ingestao[a][b][0]][0] equivale a porção usada como base para os valores nutricionais do "alimentos.csv"       
         cal = cal + (float(dict_alimentos[dict_ingestao[a][b][0]][1])*prop)    # Adiciona a quantidade de calorias consumidas no alimento à quantidade de calorias já consumida no dia
-                                                                               # float(dict_alimentos[dict_ingestao[a][b][0]][1]) equivale a quantidade de calorias que uma porção do alimento [b] possui      
+                                                                               # float(dict_alimentos[dict_ingestao[a][b][0]][1]) equivale a quantidade de calorias que uma porção do alimento [b] possui        
         prot = prot + (float(dict_alimentos[dict_ingestao[a][b][0]][2])*prop)  # Adiciona a quantidade de proteínas consumidas no alimento à quantidade de proteínas já consumida no dia
                                                                                # float(dict_alimentos[dict_ingestao[a][b][0]][3]) equivale a quantidade de proteínas que uma porção do alimento [b] possui           
         carb = carb + (float(dict_alimentos[dict_ingestao[a][b][0]][3])*prop)  # Adiciona a quantidade de carboidratos consumidas no alimento à quantidade de carboidratos já consumida no dia
@@ -101,24 +103,7 @@ for a in datas:
 '''
 Criará uma lista com as datas consideradas, só que em ordem cronológica
 '''
-datas_crono = list()                                                           # Lista com as datas em ordem cronológica
-temp = list()
-
-for c in range(len(datas)):                                                    # A lista "temp", conterá cada data, separando o dia, mês e ano como um elemento de uma lista. Exemplo: 06/04/15 se tornará ['06','04','15']
-    temp.append(datas[c].split('/'))    
-    
-for d in range(len(datas)):                                                    # Esse loop adicionará as datas em ordem cronológica à lista "datas_crono"
-    for e in range(len(datas)):    
-        if datas[d] in datas_crono:                                            # Garantirá que não adicione datas repetidas na lista "datas_crono"
-            break
-        if temp[d][2] <= temp[e][2]:                                           # Essa e as próximas três linhas comparam um elemento com um outro, checando primeiramente o ano, depois o mês e só então a data.
-            if temp[d][1] <= temp[e][1]:                                       # Essas quatro linhas, portanto, são as que adicionam as datas em ordem cronológicas
-                if temp[d][0] < temp[e][0]:                                    # Aqui é adicionado a data.
-                    datas_crono.append(datas[d])
-for f in datas:                                                                # A última data não é adicionada à lista pelos loops anteriores, portanto este loop serve para adicioná-lo
-    if f not in datas_crono:
-        datas_crono.append(f)
-
+datas_crono = sorted(datas)
 
 '''
 Criará uma lista com a quantidade calórica que usuário deveria consumir por dia, segundo a fórmula de Harris-Benedict
@@ -155,9 +140,39 @@ else:
     resultado.write('Você possui um sério caso de obesidade, segundo o seu IMC (calculado através de sua massa e altura)\n')
 
 '''
-Plotará os gráficos
+Plotará os gráficos das calorias
+'''
+calorias_consumidas = []
+for a in datas_crono:
+	calorias_consumidas.append(dict_dadosnutri[a][0])
+ 
+todos_elementos = calorias_consumidas + calorias_necessarias
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+
+y = calorias_consumidas
+k = calorias_necessarias
+
+ax = plt.subplot(111)
+ax.bar(np.arange(0,len(datas_crono))+0.8, y,width=0.2,color='b')
+ax.bar(np.arange(0,len(datas_crono))+1.0, k,width=0.2,color='r')
+ax.set_xticks(np.arange(len(datas_crono))+1)
+ax.set_xticklabels(datas_crono)
+plt.axis([0,len(datas_crono)+1,0,max(todos_elementos)+200])
+
+
+''' Plotará os gráficos dos valores biológicos
 '''
 
+
+
+print(dict_ingestao)
+print(' ')
+print(dict_dadosnutri)
+print(' ')
+plt.show()
 
 arquivo_alimentos.close
 arquivo_usuario.close
