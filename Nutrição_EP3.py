@@ -142,37 +142,64 @@ else:
 '''
 Plotará os gráficos das calorias
 '''
-calorias_consumidas = []
-for a in datas_crono:
-	calorias_consumidas.append(dict_dadosnutri[a][0])
- 
-todos_elementos = calorias_consumidas + calorias_necessarias
+def grafico_calorias():
+    import matplotlib.pyplot as plt
+    import numpy as np
+    
+    calorias_consumidas = []
+    for a in datas_crono:
+        calorias_consumidas.append(dict_dadosnutri[a][0])
+     
+    todos_elementos = calorias_consumidas + calorias_necessarias
+     
+    y = calorias_consumidas
+    k = calorias_necessarias
+    
+    ax = plt.subplot(111)
+    ax.bar(np.arange(0,len(datas_crono))+0.8, y,width=0.2,color='b')
+    ax.bar(np.arange(0,len(datas_crono))+1.0, k,width=0.2,color='r')
+    ax.set_xticks(np.arange(len(datas_crono))+1)
+    ax.set_xticklabels(datas_crono)
+    plt.axis([0,len(datas_crono)+1,0,max(todos_elementos)+200])
+    legenda="Calorias ingeridas(Kcal)","Calorias recomendadas(Kcal)"
+    plt.legend(legenda,bbox_to_anchor=(1.0, -0.15),ncol=2,fancybox=True, shadow=True)
+    plt.show()
+    
+grafico_calorias()
 
-import matplotlib.pyplot as plt
-import numpy as np
-
-
-y = calorias_consumidas
-k = calorias_necessarias
-
-ax = plt.subplot(111)
-ax.bar(np.arange(0,len(datas_crono))+0.8, y,width=0.2,color='b')
-ax.bar(np.arange(0,len(datas_crono))+1.0, k,width=0.2,color='r')
-ax.set_xticks(np.arange(len(datas_crono))+1)
-ax.set_xticklabels(datas_crono)
-plt.axis([0,len(datas_crono)+1,0,max(todos_elementos)+200])
-
-
-''' Plotará os gráficos dos valores biológicos
+''' 
+Plotará os gráficos do consumo dos outros nutrientes
 '''
+def grafico_nutricional():
+    import matplotlib.pyplot as plt
+    import numpy as np
+    
+    proteinas = list()
+    carboidratos = list()
+    gorduras = list()
+    for a in datas_crono:
+        proteinas.append(dict_dadosnutri[a][1])
+        carboidratos.append(dict_dadosnutri[a][2])
+        gorduras.append(dict_dadosnutri[a][3])        
 
+    todos_elementos = proteinas+carboidratos+gorduras    
+    
+    y = proteinas
+    z = carboidratos
+    k = gorduras
+    
+    ax = plt.subplot(111)
+    ax.bar(np.arange(0,len(datas_crono))+0.7, y,width=0.2,color='b')
+    ax.bar(np.arange(0,len(datas_crono))+0.9, z,width=0.2,color='g')
+    ax.bar(np.arange(0,len(datas_crono))+1.1, k,width=0.2,color='r')
+    ax.set_xticks(np.arange(len(datas_crono))+1)
+    ax.set_xticklabels(datas_crono)
+    plt.axis([0,len(datas_crono)+1,0,max(todos_elementos)+5])
+    legendas="Proteínas","Carboidratos","Gorduras"
+    plt.legend(legendas,bbox_to_anchor=(1.0, -0.15),ncol=2,fancybox=True, shadow=True)
+    plt.show()
 
-
-print(dict_ingestao)
-print(' ')
-print(dict_dadosnutri)
-print(' ')
-plt.show()
+grafico_nutricional()
 
 arquivo_alimentos.close
 arquivo_usuario.close
