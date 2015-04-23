@@ -12,6 +12,7 @@ from funcao_nutricao import *
 '''
 Criará uma lista com o nome do usuário e as informações fisícas associadas a ele
 '''
+
 lista_usuario = arquivo_usuario.readlines()                                    # Lista com todas as informações do usuário
 descricao_usuario = lista_usuario[1].split(',')                                # Lista temporaria contendo as informações da 2° linha do arquivo "usuarios.csv"
 
@@ -19,6 +20,7 @@ descricao_usuario = lista_usuario[1].split(',')                                #
 '''
 Criará um dicionário com todos os  alimentos e as informações associadas a eles
 '''
+
 dict_alimentos = dict()		                                             # Dicionário que conterá todas as informações dos alimentos
 lista_alimentos = arquivo_alimentos.readlines()
 for i in range(1, len(lista_alimentos)):
@@ -29,6 +31,7 @@ for i in range(1, len(lista_alimentos)):
 '''
 Criará um dicionário com as informações nutricionais do usuário (o que ele consumiu em cada dia considerado)
 '''
+
 dict_ingestao = dict()                                                         # Dicionário com as informações daquilo que o usuário ingeriu por dia
 lista_ingestao = list()                                                        # Uma lista em que cada elemento é uma lista com outros 3 elementos (a data, o alimento e a quantidade)
 datas = list()                                                                 # Lista com todas as datas consideradas
@@ -51,6 +54,7 @@ for x in datas:                                                                #
 '''
 Criará um dicionário com as informações de quantas calorias (em Kcal) e quanto de proteínas, carboidratos e gorduras (em gramas) ele consumiu em cada dia
 '''
+
 dict_dadosnutri = dict()                                                       # Diciánario com os valores nutricionais consumidos a cada dia (calorias, proteínas, carboidratos,. Exemplo: {'07/04/15': [1553.50, 36.53, 223.57, 57.07], '06/04/15': [462.50, 7.22, 62.85, 20.25]}
 
 
@@ -73,10 +77,13 @@ for a in datas:
                                                                                # float(dict_alimentos[dict_ingestao[a][b][0]][4]) equivale a quantidade de gorduras que uma porção do alimento [b] possui   
     dict_dadosnutri[a] = [cal,prot,carb,gord]                                  # Coloca o valor total de calorias, proteínas, carboidratos e gorduras consumidas no dia no dicionário (como um valor), associado a uma chave, que será a data (o dia em que tudo foi consumido)
 
+
 '''
 Criará uma lista com as datas consideradas, só que em ordem cronológica
 '''
+
 datas_crono = sorted(datas)
+
 
 '''
 Criará uma lista com a quantidade calórica que usuário deveria consumir por dia, segundo a fórmula de Harris-Benedict
@@ -91,23 +98,24 @@ for g in range(len(calorias_necessarias)):
 '''
 Escreverá as informações necessárias no arquivo "resultado.csv"
 '''
+
 resultado = open('resultado.txt','w',encoding='utf8')
 
 resultado.write('Abaixo estão o seu índice de massa corporal (IDM), a quantidade de calorias que você consumiu\ne o quanto foi consumido a mais ou a menos segundo a fórmula de Harris-Benedict em cada dia e,\npor fim, se você está subnutrido, saudável, possui sobrepeso, ou obesidade de graus I, II ou III\n\n')
 
 imc = IMC(float(descricao_usuario[2]),float(descricao_usuario[4]))
 
-calorias_recomendadas = calcula_harris(float(descricao_usuario[1]),float(descricao_usuario[2]),descricao_usuario[3],float(descricao_usuario[4]),descricao_usuario[5])
+calorias_recomendadas = calcula_harris(int(descricao_usuario[1]),float(descricao_usuario[2]),descricao_usuario[3],float(descricao_usuario[4]),str(descricao_usuario[5]))
 
 resultado.write('Dia, calorias consumidas e quantas calorias você consumiu a mais ou a menos do que deveria:\n\n')
 
-for h in datas_crono:
+for h in datas_crono:                                                          # Esse loop escreverá em linhas diferentes cada dia e as seguintes informações: calorias totais consumidas nesse dia e calorias a mais ou a menos consumidas do que o recomendado nesse dia
     calorias_consumidas = dict_dadosnutri[h][0]
     resultado.write('dia %s   '%h)
     resultado.write('calorias consumidas: %f   '%calorias_consumidas)
     resultado.write('calorias consumidas a mais/menos: %f\n\n'%(calorias_consumidas-calorias_recomendadas))
 
-if imc<18.5:
+if imc<18.5:                                                                   # Esta e as próximas 12 linhas escreverão sentenças diferentes dependendo do IMC do usuário
     resultado.write('Você está subnutrido, segundo o seu IMC (calculado através de sua massa e altura)\n')
 elif imc>=18.5 and imc<=24.9:
     resultado.write('Você está saudável, segundo o seu IMC (calculado através de sua massa e altura)\n')
@@ -143,7 +151,7 @@ ax.bar(np.arange(0,len(datas_crono))+1.0, k,width=0.2,color='r')
 ax.set_xticks(np.arange(len(datas_crono))+1)
 ax.set_xticklabels(datas_crono)
 plt.axis([0,len(datas_crono)+1,0,max(todos_elementos)+200])
-legenda="Calorias ingeridas(Kcal)","Calorias recomendadas(Kcal)"
+legenda = "Calorias ingeridas(Kcal)","Calorias recomendadas(Kcal)"
 plt.legend(legenda,bbox_to_anchor=(1.0, -0.15),ncol=2,fancybox=True, shadow=True)
 plt.show()
 
@@ -177,7 +185,7 @@ ax.bar(np.arange(0,len(datas_crono))+1.1, k,width=0.2,color='r')
 ax.set_xticks(np.arange(len(datas_crono))+1)
 ax.set_xticklabels(datas_crono)
 plt.axis([0,len(datas_crono)+1,0,max(todos_elementos)+5])
-legendas="Proteínas","Carboidratos","Gorduras"
+legendas = "Proteínas","Carboidratos","Gorduras"
 plt.legend(legendas,bbox_to_anchor=(1.0, -0.15),ncol=2,fancybox=True, shadow=True)
 plt.show()
 
