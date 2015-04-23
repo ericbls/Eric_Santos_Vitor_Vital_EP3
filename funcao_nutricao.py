@@ -5,34 +5,54 @@ Calculará o IMC segundo uma massa e altura
 '''
 
 def IMC(massa,altura):
-    return massa/altura**2
+    '''
+    >>> IMC(90,1.88)
+    25,46
+    >>> IMC(80,1.78)
+    25,24
+    '''
+    return float("{0:.2f}".format(massa/altura**2))
+    
 
 '''
 Calculará o a quantidade de calorias que o usuário deveria ingerir
 '''    
-def calcula_harris(idade,massa,sexo,altura,exercicio):                         # Define a função que calculará o TMB e o grau de atividade
+def calcula_harris(idade,massa,sexo,altura,exercicio):  
+                       # Define a função que calculará o TMB e o grau de atividade
+    ''' 
+    >>> calcula_harris(22,80,M,1.88,muito alto)
+    3680,98
+    >>> calcula_harris(40,90,M,1.88,baixo)
+    2707,04
+    >>> calcula_harris(20,55,F,1.72,muito alto)
+    2416,38
+    >>> calcula_harris(40,62,F,1.72,baixo)
+    1947,00
+
+    ''' 
+    altura = altura*100     
     if sexo == 'F':
         if exercicio == 'minimo':
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.2
+            return float("{0:.2f}".format(447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.2)
         elif exercicio == 'baixo':
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.375
+            return float("{0:.2f}".format(447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.375)
         elif exercicio == 'alto':
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.725
+            return float("{0:.2f}".format(447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.725)
         elif exercicio == 'muito alto':
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.9
+            return float("{0:.2f}".format(447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.9)
         else:
-            return (447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.55
+            return float("{0:.2f}".format(447.6+(9.2*massa)+(3.1*altura)-(4.3*idade))*1.55)
     if sexo == 'M':
         if exercicio == 'minimo':
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.2
+            return float("{0:.2f}".format(88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.2)
         elif exercicio == 'baixo':
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.375
+            return float("{0:.2f}".format(88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.375)
         elif exercicio == 'alto':
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.725
+            return float("{0:.2f}".format(88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.725)
         elif exercicio == 'muito alto':
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.9
+            return float("{0:.2f}".format(88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.9)
         else:
-            return (88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.55
+            return float("{0:.2f}".format(88.36+(13.4*massa)+(4.8*altura)-(5.7*idade))*1.55)
     else:
         print('Este programa não se aplica a você, seja lá o que você for')
 

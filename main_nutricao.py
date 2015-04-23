@@ -62,16 +62,16 @@ for a in datas:
     carb = 0
     gord = 0
     for b in range(len(dict_ingestao[a])):
-        prop = float(dict_ingestao[a][b][1])/float(dict_alimentos[dict_ingestao[a][b][0]][0])   # fração de quanto o usuário consumiu de uma porção do alimento (quantidade no arquivo "alimentos.csv").
+        prop = float("{0:.2f}".format(dict_ingestao[a][b][1]))/float("{0:.2f}".format(dict_alimentos[dict_ingestao[a][b][0]][0]))   # fração de quanto o usuário consumiu de uma porção do alimento (quantidade no arquivo "alimentos.csv").
                                                                                                 # Dict_ingestao[a][b][1] equivale a porção ([1]) consumida de um alimento [b] no dia [a]
                                                                                                 # Dict_alimentos[dict_ingestao[a][b][0]][0] equivale a porção usada como base para os valores nutricionais do "alimentos.csv"       
-        cal = cal + (float(dict_alimentos[dict_ingestao[a][b][0]][1])*prop)    # Adiciona a quantidade de calorias consumidas no alimento à quantidade de calorias já consumida no dia
+        cal = cal + float("{0:.2f}".format(((dict_alimentos[dict_ingestao[a][b][0]][1])*prop))    # Adiciona a quantidade de calorias consumidas no alimento à quantidade de calorias já consumida no dia
                                                                                # float(dict_alimentos[dict_ingestao[a][b][0]][1]) equivale a quantidade de calorias que uma porção do alimento [b] possui        
-        prot = prot + (float(dict_alimentos[dict_ingestao[a][b][0]][2])*prop)  # Adiciona a quantidade de proteínas consumidas no alimento à quantidade de proteínas já consumida no dia
+        prot = prot + float("{0:.2f}".format(((dict_alimentos[dict_ingestao[a][b][0]][2])*prop))  # Adiciona a quantidade de proteínas consumidas no alimento à quantidade de proteínas já consumida no dia
                                                                                # float(dict_alimentos[dict_ingestao[a][b][0]][3]) equivale a quantidade de proteínas que uma porção do alimento [b] possui           
-        carb = carb + (float(dict_alimentos[dict_ingestao[a][b][0]][3])*prop)  # Adiciona a quantidade de carboidratos consumidas no alimento à quantidade de carboidratos já consumida no dia
+        carb = carb + float("{0:.2f}".format(((dict_alimentos[dict_ingestao[a][b][0]][3])*prop))  # Adiciona a quantidade de carboidratos consumidas no alimento à quantidade de carboidratos já consumida no dia
                                                                                # float(dict_alimentos[dict_ingestao[a][b][0]][3]) equivale a quantidade de carboidratos que uma porção do alimento [b] possui     
-        gord = gord + (float(dict_alimentos[dict_ingestao[a][b][0]][4])*prop)  # Adiciona a quantidade de gorduras consumidas no alimento à quantidade de gorduras já consumida no dia
+        gord = gord + float("{0:.2f}".format(((dict_alimentos[dict_ingestao[a][b][0]][4])*prop))  # Adiciona a quantidade de gorduras consumidas no alimento à quantidade de gorduras já consumida no dia
                                                                                # float(dict_alimentos[dict_ingestao[a][b][0]][4]) equivale a quantidade de gorduras que uma porção do alimento [b] possui   
     dict_dadosnutri[a] = [cal,prot,carb,gord]                                  # Coloca o valor total de calorias, proteínas, carboidratos e gorduras consumidas no dia no dicionário (como um valor), associado a uma chave, que será a data (o dia em que tudo foi consumido)
 
@@ -88,7 +88,7 @@ Criará uma lista com a quantidade calórica que usuário deveria consumir por d
 
 calorias_necessarias = [0]*len(datas_crono)
 for g in range(len(calorias_necessarias)):
-    calorias_necessarias[g] = calcula_harris(float(descricao_usuario[1]),float(descricao_usuario[2]),descricao_usuario[3],float(descricao_usuario[4]),descricao_usuario[5])
+    calorias_necessarias[g] = calcula_harris(float(descricao_usuario[1]),float(descricao_usuario[2]),float(descricao_usuario[3]),float(descricao_usuario[4]),float(descricao_usuario[5]))
 
 '''
 Escreverá as informações necessárias no arquivo "resultado.csv"
