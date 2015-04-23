@@ -1,9 +1,11 @@
-#ATEN«√O ¿S SEGUINTES OBSERVA«’ES:
+ATEN√á√ÉO √ÄS SEGUINTES OBSERVA√á√ïES!!!:
 
-1. No arquivo usuarios.csv, o nÌvel de exercÌcio do usu·rio deve ser: "mÌnimo", "baixo", "mÈdio", "alto" ou "muito ativo", exatamente como indicado nas intruÁıes sobre o EP3 postadas no BlackBoard (https://insper.blackboard.com/bbcswebdav/pid-204607-dt-content-rid-876927_2/courses/201561.GRENG_201561_0007.DESIGNSOFT_1C/EP3.pdf)
+1. No arquivo usuarios.csv, o n√≠vel de exerc√≠cio do usu√°rio deve ser: "m√≠nimo", "baixo", "m√©dio", "alto" ou "muito ativo", exatamente como indicado nas intru√ß√µes sobre o EP3 postadas no BlackBoard (https://insper.blackboard.com/bbcswebdav/pid-204607-dt-content-rid-876927_2/courses/201561.GRENG_201561_0007.DESIGNSOFT_1C/EP3.pdf)
 
-2. O repositÛrio contÈm os seguintes arquivos: NutriÁ„o_EP3.jpg, alimentos.csv, funcao_nutricao.py, nutricao_EP3.py, usuarios.csv e, por fim, este arquivo README.
+2. O reposit√≥rio cont√©m os seguintes arquivos: Nutri√ß√£o_EP3.jpg, alimentos.csv, funcao_nutricao.py, nutricao_EP3.py, usuarios.csv e, por fim, este arquivo README.
 
-3. O programa em "nutricao_EP3" gerar· um arquivo chamado "resultado.txt" com as informaÁıes exigidas nas orientaÁıes do EP3. DESTACO QUE, EM ALGUMAS OCASI’ES, AO RODAR O PROGRAMA EM "nutricao_EP3" O ARQUIVO "resultado.txt" APARECER¡ EM BRANCO... NESTE CASO, APENAS RODE A PROGRAMA«√O DE NOVO, E O ARQUIVO "resultado.txt" APARECER¡ COMO O ESPERADO (COM AS INFORMA«’ES NECESS¡RIAS ESCRITAS NELE).
+3. O programa em "nutricao_EP3" gerar√° um arquivo chamado "resultado.txt" com as informa√ß√µes exigidas nas orienta√ß√µes do EP3. DESTACO QUE, EM ALGUMAS OCASI√ïES, AO RODAR O PROGRAMA EM "nutricao_EP3" O ARQUIVO "resultado.txt" APARECER√Å EM BRANCO... NESTE CASO, APENAS RODE A PROGRAMA√á√ÉO DE NOVO, E O ARQUIVO "resultado.txt" APARECER√Å COMO O ESPERADO (COM AS INFORMA√á√ïES NECESS√ÅRIAS ESCRITAS NELE).
+
+4. Rode o programa no IPython console para demonstrar os gr√°ficos corretamente!!! 
 
 Espero que tudo esteja certo!!! Obrigado.
